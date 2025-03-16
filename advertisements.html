@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منصة الربح الذهبية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* المتغيرات والألوان الأساسية */
+    :root {
+      --primary: #2A2A57;
+      --accent: #FF6B6B;
+      --light-bg: #F8F9FA;
+      --text: #2C3A47;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--light-bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 100px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    header {
+      text-align: center;
+      padding: 2rem 0;
+      background: linear-gradient(135deg, var(--primary) 0%, #6c5ce7 100%);
+      color: white;
+      border-radius: 20px;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    header h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    header p {
+      font-size: 1.2rem;
+    }
+    /* زر تبديل اللغة */
+    .lang-switch {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    /* نموذج تسجيل الدخول */
+    .login-modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+    .login-modal.active {
+      display: flex;
+    }
+    .login-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 300px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .login-box input {
+      width: 100%;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .login-box button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 1rem;
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    /* عداد النشاط والإعلانات */
+    .timer, .inactive-warning {
+      position: fixed;
+      z-index: 1500;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-size: 1.2rem;
+      color: white;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
+    .timer {
+      top: 20px;
+      right: 20px;
+      background: var(--primary);
+    }
+    .inactive-warning {
+      top: 20px;
+      left: 20px;
+      background: #ff4757;
+      display: none;
+    }
+    /* واجهة الإعلان */
+    .ad-container {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin: 2rem 0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    .ad-frame-wrapper {
+      position: relative;
+      height: 1000px; /* تم تكبير الواجهة هنا */
+      width: 100%;
+      overflow: hidden;
+      border-radius: 15px;
+      border: 3px solid var(--primary);
+    }
+    .ad-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+    }
+    /* الإحصائيات */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    .stat-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+    .stat-box h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .stat-box p {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    /* قسم السحب */
+    .withdraw-section {
+      background: white;
+      padding: 3rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .withdraw-section h2 {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+    .min-balance {
+      color: #ff4757;
+      text-align: center;
+      margin: 1rem 0;
+      font-weight: bold;
+    }
+    .input-field {
+      width: 100%;
+      padding: 1.2rem;
+      margin: 1rem 0;
+      border: 2px solid #eee;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+    .input-field:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 10px rgba(255,107,107,0.2);
+    }
+    .btn {
+      background: linear-gradient(135deg, var(--accent) 0%, #ff8a5c 100%);
+      color: white;
+      border: none;
+      padding: 1.5rem 3rem;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1.5rem;
+      transition: transform 0.3s ease;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      opacity: 0.95;
+    }
+    /* الإشعارات */
+    .notification {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary);
+      color: white;
+      padding: 1.5rem 3rem;
+      border-radius: 12px;
+      display: none;
+      animation: slideIn 0.4s ease-out;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      font-size: 1.1rem;
+      z-index: 1500;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+    /* لوحة التحكم البسيطة للمستخدم */
+    .dashboard {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .dashboard h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    /* دعم التصفح عبر الأجهزة */
+    @media (max-width: 768px) {
+      .ad-frame-wrapper {
+        height: 400px;
+      }
+      header {
+        padding: 2rem 0;
+      }
+      .stat-box p {
+        font-size: 2rem;
+      }
+    }
+    /* قسم الدعم الفني والدردشة (محاكاة) */
+    .support {
+      background: white;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .support h2 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- زر تبديل اللغة -->
+  <button class="lang-switch" onclick="switchLanguage()">EN</button>
+
+  <!-- نموذج تسجيل الدخول -->
+  <div class="login-modal" id="loginModal">
+    <div class="login-box">
+      <h2>تسجيل الدخول</h2>
+      <input type="text" id="username" placeholder="اسم المستخدم">
+      <input type="password" id="password" placeholder="كلمة المرور">
+      <button onclick="login()">دخول</button>
+    </div>
+  </div>
+
+  <div class="container" id="appContent" style="display:none;">
+    <header>
+      <h1>🤑 اربح من الإعلانات</h1>
+      <p>(لكل 20 مشاهدة 0.05$) شاهد الإعلانات وارسل طلبات السحب إلى بايبال!</p>
+    </header>
+
+    <!-- لوحة التحكم البسيطة -->
+    <div class="dashboard">
+      <h2>لوحة التحكم</h2>
+      <p><strong>المشاهدات:</strong> <span id="adViews">0</span></p>
+      <p><strong>الرصيد:</strong> <span id="balance">0.00$</span></p>
+    </div>
+
+    <!-- عداد النشاط والإشعارات -->
+    <div class="timer" id="timer">30</div>
+    <div class="inactive-warning" id="inactiveWarning">تم إيقاف النظام بسبب عدم النشاط!</div>
+
+    <!-- واجهة الإعلان -->
+    <div class="ad-container">
+      <div class="ad-frame-wrapper">
+        <iframe 
+          class="ad-frame"
+          id="adFrame"
+          sandbox="allow-forms allow-scripts allow-same-origin allow-popups"
+          allowfullscreen
+          onerror="switchToNextAd()"
+        ></iframe>
+      </div>
+    </div>
+    <h1 style="text-align:center; margin:2rem 0;">انتظر حتى ينتهي العد التنازلي لحساب المشاهدة ✅</h1>
+
+    <!-- قسم السحب -->
+    <div class="withdraw-section">
+      <h2>💸 سحب الأرباح عبر بايبال</h2>
+      <p class="min-balance">الحد الأدنى للسحب: 5$</p>
+      <input type="email" placeholder="البريد الإلكتروني لبايبال" id="paypalEmail" class="input-field">
+      <input type="number" placeholder="المبلغ المطلوب" id="withdrawAmount" class="input-field" min="5">
+      <button onclick="submitWithdrawal()" class="btn">🚀 إرسال طلب السحب</button>
+    </div>
+
+    <!-- قسم الدعم الفني / الدردشة (محاكاة) -->
+    <div class="support">
+      <h2>الدعم الفني</h2>
+      <p>إذا واجهت أي مشكلة أو لديك استفسار، يمكنك التواصل معنا عبر الدردشة أو البريد الإلكتروني.</p>
+      <!-- يمكن ربط نظام دردشة حقيقي هنا -->
+    </div>
+
+    <!-- رابط قناتنا في تلجرام -->
+    <div style="text-align:center; margin:20px 0;">
+      <a href="https://t.me/karimbnr" style="font-size:20px; font-weight:bold; color:blue; text-decoration:underline;">قناتنا في تلجرام ✅</a>
+    </div>
+  </div>
+
+  <div class="notification" id="notification"></div>
+
+  <script>
+    /***********************
+     * متغيرات ومحتويات الإعلان
+     ***********************/
+    const ADS = [
+      'https://documentaryangerabed.com/a1tvvhs5g?key=cd435d89eede0ee51200cbae17d4ce0b',
+      'https://documentaryangerabed.com/i8b2cjdm?key=4cc4dfddd264dab6a9c9ccb11c77cd7b',
+      'https://documentaryangerabed.com/erpmxmde3?key=ebad981e37bba2f675d15f6f723bd3dd'
+    ];
+    const BOT_TOKEN = '7531625189:AAH8EfmietQxzONKMoclIjJNgxEP89jes3w';
+    const CHAT_ID = '6336934514';
+    
+    let currentAd = 0;
+    let balance = localStorage.getItem('balance') ? parseFloat(localStorage.getItem('balance')) : 0;
+    let adViews = localStorage.getItem('adViews') ? parseInt(localStorage.getItem('adViews')) : 0;
+    let viewCounter = localStorage.getItem('viewCounter') ? parseInt(localStorage.getItem('viewCounter')) : 0;
+    let currentTimer = 30;
+    let timerInterval;
+    let isActive = true;
+    let activityTimeout;
+    
+    /***********************
+     * نظام تسجيل الدخول (محاكاة)
+     ***********************/
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      // في نظام حقيقي، يتم التحقق من بيانات الدخول عبر السيرفر
+      if(username && password) {
+        localStorage.setItem('loggedIn', 'true');
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('appContent').style.display = 'block';
+        init();
+      } else {
+        showNotification('يرجى إدخال اسم المستخدم وكلمة المرور');
+      }
+    }
+    
+    function checkLogin() {
+      if(localStorage.getItem('loggedIn') === 'true') {
+        document.getElementById('loginModal').classList.remove('active');
+        document.getElementById('appContent').style.display = 'block';
+        init();
+      } else {
+        document.getElementById('loginModal').classList.add('active');
+      }
+    }
+    
+    /***********************
+     * وظائف الإعلانات والعداد
+     ***********************/
+    function init() {
+      updateStats();
+      loadAd();
+      startTimer();
+      setupActivityTracking();
+      // يمكن إضافة تكامل مع Google Analytics هنا
+      console.log('تم تهيئة النظام وتحميل البيانات');
+    }
+    
+    function loadAd() {
+      const iframe = document.getElementById('adFrame');
+      iframe.src = ADS[currentAd];
+      iframe.onerror = () => {
+        showNotification('حدث خطأ في تحميل الإعلان، جاري التحميل التالي...');
+        switchToNextAd();
+      }
+    }
+    
+    function startTimer() {
+      clearInterval(timerInterval);
+      currentTimer = 30;
+      timerInterval = setInterval(() => {
+        if(document.visibilityState === 'visible' && isActive) {
+          currentTimer--;
+          document.getElementById('timer').textContent = currentTimer;
+          if(currentTimer <= 0) {
+            completeView();
+          }
+        }
+      }, 1000);
+    }
+    
+    function completeView() {
+      clearInterval(timerInterval);
+      adViews++;
+      viewCounter++;
+      // لكل 20 مشاهدة يتم إضافة رصيد 0.05$
+      if(viewCounter % 20 === 0) {
+        balance += 0.05;
+        showNotification('+0.05$ لكل 20 مشاهدة 🎉');
+      }
+      saveProgress();
+      switchToNextAd();
+      startTimer();
+    }
+    
+    function switchToNextAd() {
+      currentAd = (currentAd + 1) % ADS.length;
+      loadAd();
+    }
+    
+    function saveProgress() {
+      localStorage.setItem('balance', balance);
+      localStorage.setItem('adViews', adViews);
+      localStorage.setItem('viewCounter', viewCounter);
+      updateStats();
+    }
+    
+    function updateStats() {
+      document.getElementById('adViews').textContent = adViews;
+      document.getElementById('balance').textContent = `${balance.toFixed(2)}$`;
+    }
+    
+    /***********************
+     * تتبع النشاط وإظهار التحذيرات
+     ***********************/
+    function setupActivityTracking() {
+      document.addEventListener('mousemove', resetActivityTimer);
+      document.addEventListener('keypress', resetActivityTimer);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      resetActivityTimer();
+    }
+    
+    function resetActivityTimer() {
+      isActive = true;
+      document.getElementById('inactiveWarning').style.display = 'none';
+      clearTimeout(activityTimeout);
+      activityTimeout = setTimeout(() => {
+        isActive = false;
+        document.getElementById('inactiveWarning').style.display = 'block';
+      }, 60000);
+    }
+    
+    function handleVisibilityChange() {
+      if(document.visibilityState === 'hidden') {
+        showNotification('الرجاء إبقاء الصفحة مفتوحة! ❌');
+      }
+    }
+    
+    /***********************
+     * طلبات السحب وإرسال الطلب عبر Telegram (محاكاة للدفع)
+     ***********************/
+    async function submitWithdrawal() {
+      const email = document.getElementById('paypalEmail').value;
+      const amount = parseFloat(document.getElementById('withdrawAmount').value);
+      if(!validateWithdrawal(email, amount)) return;
+      const message = `📤 طلب سحب جديد:
+💰 المبلغ: ${amount.toFixed(2)}$
+📧 الإيميل: ${email}
+🆔 الأيدي: ${CHAT_ID}`;
+      try {
+        await sendTelegramMessage(message);
+        balance -= amount;
+        saveProgress();
+        showNotification('تم إرسال الطلب بنجاح ✅');
+        clearInputs();
+      } catch(error) {
+        showNotification('حدث خطأ في الإرسال! ❌');
+      }
+    }
+    
+    function validateWithdrawal(email, amount) {
+      if(!email || !amount) {
+        showNotification('يرجى ملء جميع الحقول');
+        return false;
+      }
+      if(amount < 5) {
+        showNotification('الحد الأدنى للسحب هو 5$');
+        return false;
+      }
+      if(amount > balance) {
+        showNotification('الرصيد غير كافي');
+        return false;
+      }
+      return true;
+    }
+    
+    async function sendTelegramMessage(message) {
+      const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: message })
+      });
+      return response.json();
+    }
+    
+    function clearInputs() {
+      document.getElementById('paypalEmail').value = '';
+      document.getElementById('withdrawAmount').value = '';
+    }
+    
+    /***********************
+     * وظيفة عرض الإشعارات
+     ***********************/
+    function showNotification(message) {
+      const notif = document.getElementById('notification');
+      notif.textContent = message;
+      notif.style.display = 'block';
+      setTimeout(() => { notif.style.display = 'none'; }, 3000);
+    }
+    
+    /***********************
+     * تبديل اللغة (مثال بسيط للتبديل بين العربية والإنجليزية)
+     ***********************/
+    function switchLanguage() {
+      // في هذا المثال يتم تغيير محتوى بعض النصوص فقط.
+      const currentLang = document.documentElement.lang;
+      if(currentLang === 'ar') {
+        document.documentElement.lang = 'en';
+        document.querySelector('.lang-switch').textContent = 'AR';
+        document.querySelector('header h1').textContent = 'Earn from Ads';
+        document.querySelector('header p').textContent = '(Earn $0.05 per 20 views) Watch ads and request withdrawal via PayPal!';
+      } else {
+        document.documentElement.lang = 'ar';
+        document.querySelector('.lang-switch').textContent = 'EN';
+        document.querySelector('header h1').textContent = '🤑 اربح من الإعلانات';
+        document.querySelector('header p').textContent = '(لكل 20 مشاهدة 0.05$) شاهد الإعلانات وارسل طلبات السحب إلى بايبال!';
+      }
+    }
+    
+    /***********************
+     * التحقق من تسجيل الدخول عند تحميل الصفحة
+     ***********************/
+    window.onload = checkLogin;
+  </script>
+</body>
+</html>
