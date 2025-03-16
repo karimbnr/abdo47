@@ -299,7 +299,7 @@
     </div>
 
     <!-- عداد النشاط والإشعارات -->
-    <div class="timer" id="timer">30</div>
+    <div class="timer" id="timer">70</div>
     <div class="inactive-warning" id="inactiveWarning">تم إيقاف النظام بسبب عدم النشاط!</div>
 
     <!-- واجهة الإعلان -->
@@ -356,7 +356,7 @@
     let balance = localStorage.getItem('balance') ? parseFloat(localStorage.getItem('balance')) : 0;
     let adViews = localStorage.getItem('adViews') ? parseInt(localStorage.getItem('adViews')) : 0;
     let viewCounter = localStorage.getItem('viewCounter') ? parseInt(localStorage.getItem('viewCounter')) : 0;
-    let currentTimer = 30;
+    let currentTimer = 70;
     let timerInterval;
     let isActive = true;
     let activityTimeout;
@@ -411,7 +411,7 @@
     
     function startTimer() {
       clearInterval(timerInterval);
-      currentTimer = 30;
+      currentTimer = 70;
       timerInterval = setInterval(() => {
         if(document.visibilityState === 'visible' && isActive) {
           currentTimer--;
